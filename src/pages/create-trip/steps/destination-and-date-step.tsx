@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { cn } from "../../../utils/cn";
 import { Controller, useFormContext } from "react-hook-form";
 import { z } from "zod";
+import { ptBR } from "date-fns/locale";
 
 interface DestinationAndDateStepProps {
   isGuestsInputOpen: boolean
@@ -65,8 +66,8 @@ export const DestinationAndDateStep = ({
     toggleIsGuestsInputOpen()
   }
 
-  const dateDisplay = trip_start_and_end_dates?.from && trip_start_and_end_dates.to ?
-    `${format(trip_start_and_end_dates.from, "d' de 'LLL")} até ${format(trip_start_and_end_dates.to, "d' de 'LLL")}`
+  const dateDisplay = trip_start_and_end_dates ?
+    `${format(trip_start_and_end_dates.from, "d' de 'LLL", { locale: ptBR })} até ${format(trip_start_and_end_dates.to, "d' de 'LLL", { locale: ptBR })}`
     : null
 
   return (

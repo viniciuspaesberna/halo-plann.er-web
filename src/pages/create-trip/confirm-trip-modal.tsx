@@ -1,6 +1,7 @@
 import { Mail, User, X } from "lucide-react"
 import { Button } from "../../components/button"
 import { format } from "date-fns"
+import { ptBR } from "date-fns/locale";
 import { Controller, useFormContext } from "react-hook-form"
 
 interface ConfirmTripModalProps {
@@ -18,7 +19,7 @@ export const ConfirmTripModal = ({
   const trip_start_and_end_dates = getValues('trip_start_and_end_dates')
 
   const dateDisplay = trip_start_and_end_dates ?
-    `${format(trip_start_and_end_dates.from, "d' de 'LLL")} até ${format(trip_start_and_end_dates.to, "d' de 'LLL")}`
+    `${format(trip_start_and_end_dates.from, "d' de 'LLL", { locale: ptBR })} até ${format(trip_start_and_end_dates.to, "d' de 'LLL", { locale: ptBR })}`
     : null
 
   return (

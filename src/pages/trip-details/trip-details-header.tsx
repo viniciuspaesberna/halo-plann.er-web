@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { api } from "../../lib/axios"
 import { useParams } from "react-router-dom"
 import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
 type Trip = {
   id: string
@@ -24,7 +25,7 @@ export const TripDetailsHeader = () => {
   }, [tripId])
 
   const dateDisplay = trip ?
-    `${format(trip.starts_at, "d' de 'LLL")} até ${format(trip.ends_at, "d' de 'LLL")}`
+    `${format(trip.starts_at, "d' de 'LLL", { locale: ptBR })} até ${format(trip.ends_at, "d' de 'LLL", { locale: ptBR })}`
     : null
 
   return (
