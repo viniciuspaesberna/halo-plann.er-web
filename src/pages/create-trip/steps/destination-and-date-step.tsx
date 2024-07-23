@@ -4,26 +4,31 @@ import { Button } from "../../../components/button";
 import { useState } from "react";
 import { DatePickerModal } from "../date-picker-modal";
 import { format } from "date-fns";
-import type { DateRange } from "react-day-picker";
 import { cn } from "../../../utils/cn";
+import { Controller, useFormContext } from "react-hook-form";
+import { z } from "zod";
 
 interface DestinationAndDateStepProps {
   isGuestsInputOpen: boolean
   toggleIsGuestsInputOpen: () => void
-  setDestination: (destination: string) => void
-  tripStartAndEndDates: DateRange | undefined
-  setTripStartAndEndDates: (range: DateRange | undefined) => void
 }
+
+const destinationAndDateStepSchema = z.object({
+  destination: z
+    .string({ required_error: "Destino é obrigatório" })
+    .min(3, { message: "Destino deve conter pelo menos 3 letras" }),
+  trip_start_and_end_dates: z.object({
+    from: z.date().optional(),
+    to: z.date().optional()
+  }).optional()
+})
 
 export const DestinationAndDateStep = ({
   isGuestsInputOpen,
   toggleIsGuestsInputOpen,
-  setDestination,
-  tripStartAndEndDates,
-  setTripStartAndEndDates
 }: DestinationAndDateStepProps) => {
+  const { control, getValues, setError, clearErrors, formState: { errors } } = useFormContext()
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
-
 
   function openDatePicker() {
     setIsDatePickerOpen(true)
@@ -33,19 +38,56 @@ export const DestinationAndDateStep = ({
     setIsDatePickerOpen(false)
   }
 
-  const dateDisplay = tripStartAndEndDates?.from && tripStartAndEndDates.to ?
-    `${format(tripStartAndEndDates.from, "d' de 'LLL")} até ${format(tripStartAndEndDates.to, "d' de 'LLL")}`
+  const destination = getValues('destination')
+  const trip_start_and_end_dates = getValues('trip_start_and_end_dates')
+
+  function destinationAndDateStepValidation() {
+    clearErrors(['destination', 'trip_start_and_end_dates'])
+
+    const validation = destinationAndDateStepSchema.safeParse({ destination, trip_start_and_end_dates })
+
+    if (!validation.success) {
+      const fieldErrors = validation.error.flatten().fieldErrors
+
+      if (fieldErrors.destination && fieldErrors.destination?.length > 0) {
+        return setError('destination', {
+          message: fieldErrors.destination[0]
+        })
+      }
+    }
+
+    if (!trip_start_and_end_dates || !trip_start_and_end_dates.from || !trip_start_and_end_dates.to) {
+      return setError('trip_start_and_end_dates', {
+        message: 'Datas de início e fim da viagem são obrigatórias'
+      })
+    }
+
+    toggleIsGuestsInputOpen()
+  }
+
+  const dateDisplay = trip_start_and_end_dates?.from && trip_start_and_end_dates.to ?
+    `${format(trip_start_and_end_dates.from, "d' de 'LLL")} até ${format(trip_start_and_end_dates.to, "d' de 'LLL")}`
     : null
 
   return (
-    <div className="h-16 px-4 bg-zinc-900 rounded-xl flex items-center shadow-shape gap-3">
+    <div className="h-16 px-4 bg-zinc-900 rounded-xl flex items-center shadow-shape gap-3 relative">
       <div className="flex items-center gap-2 flex-1">
         <MapPin className="size-5 text-zinc-400" />
-        <input
-          onChange={e => setDestination(e.target.value)}
-          disabled={isGuestsInputOpen}
-          placeholder="Para onde você vai?"
-          className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+
+        <Controller
+          name="destination"
+          control={control}
+          render={
+            ({ field }) => (
+              <input
+                {...field}
+                disabled={isGuestsInputOpen}
+                placeholder="Para onde você vai?"
+                className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+              />
+
+            )
+          }
         />
       </div>
 
@@ -58,13 +100,13 @@ export const DestinationAndDateStep = ({
       </button>
 
       {isDatePickerOpen && (
-        <DatePickerModal closeDatePicker={closeDatePicker} selected={tripStartAndEndDates} onSelect={setTripStartAndEndDates} />
+        <DatePickerModal closeDatePicker={closeDatePicker} />
       )}
 
       <div className="w-px h-6 bg-zinc-800" />
 
       {!isGuestsInputOpen ? (
-        <Button onClick={toggleIsGuestsInputOpen}>
+        <Button onClick={destinationAndDateStepValidation}>
           Continuar
           <ArrowRight className="size-5" />
         </Button>
@@ -73,6 +115,14 @@ export const DestinationAndDateStep = ({
           Alterar local/data
           <Settings2 className="size-5" />
         </Button>
+      )}
+
+      {errors.destination && (
+        <small className="absolute -bottom-6 text-rose-400">{errors.destination.message?.toString()}</small>
+      )}
+
+      {errors.trip_start_and_end_dates && !isDatePickerOpen && (
+        <small className="absolute -bottom-6 text-rose-400">{errors.trip_start_and_end_dates.message?.toString()}</small>
       )}
     </div>
   );

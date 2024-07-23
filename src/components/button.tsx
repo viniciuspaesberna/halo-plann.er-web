@@ -1,4 +1,3 @@
-import { Loader2Icon } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { tv, VariantProps } from "tailwind-variants";
 
@@ -32,15 +31,16 @@ export const Button = ({
   variant,
   isLoading,
   size,
+  type = 'button',
   ...rest
 }: ButtonProps) => {
   return (
-    <button {...rest} disabled={isLoading} className={buttonVariants({ variant, size })} >
-      {/* {isLoading ? (
-        <Loader2Icon className="animate-spin" />
-      ) :
-        children
-      } */}
+    <button
+      {...rest}
+      disabled={isLoading}
+      type={type}
+      className={buttonVariants({ variant, size })}
+    >
       {children}
     </button>
   );

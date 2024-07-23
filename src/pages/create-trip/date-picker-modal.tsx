@@ -1,20 +1,21 @@
 import { addDays } from "date-fns"
+
+import { Controller, useFormContext } from "react-hook-form"
+import { DayPicker } from "react-day-picker"
+
 import { X } from "lucide-react"
-import { DayPicker, type DateRange } from "react-day-picker"
 
 import "react-day-picker/style.css"
 
 interface DatePickerModalProps {
   closeDatePicker: () => void
-  selected: DateRange | undefined
-  onSelect: (range: DateRange | undefined) => void
 }
 
 export const DatePickerModal = ({
   closeDatePicker,
-  selected,
-  onSelect
 }: DatePickerModalProps) => {
+  const { control } = useFormContext()
+
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
       <div className=" rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
@@ -35,19 +36,28 @@ export const DatePickerModal = ({
           </p>
         </div>
 
-        <DayPicker
-          mode="range"
-          selected={selected}
-          onSelect={onSelect}
-          disabled={{ before: addDays(new Date(), 1) }}
-          classNames={{
-            chevron: 'fill-lime-300',
-            today: '',
-            selected: 'border-none text-zinc-950 font-bold bg-lime-300 rounded-full',
-            range_start: 'bg-lime-300 border-none rounded-l-full rounded-r-none',
-            range_middle: 'bg-lime-300/40 border-none rounded-none',
-            range_end: 'bg-lime-300 border-none rounded-l-none rounded-r-full',
-          }}
+        <Controller
+          name="trip_start_and_end_dates"
+          control={control}
+          render={
+            ({ field }) => (
+              <DayPicker
+                {...field}
+                mode="range"
+                selected={field.value}
+                onSelect={field.onChange}
+                disabled={{ before: addDays(new Date(), 1) }}
+                classNames={{
+                  chevron: 'fill-lime-300',
+                  today: '',
+                  selected: 'border-none text-zinc-950 font-bold bg-lime-300 rounded-full',
+                  range_start: 'bg-lime-300 border-none rounded-l-full rounded-r-none',
+                  range_middle: 'bg-lime-300/40 border-none rounded-none',
+                  range_end: 'bg-lime-300 border-none rounded-l-none rounded-r-full',
+                }}
+              />
+            )
+          }
         />
       </div>
     </div>
