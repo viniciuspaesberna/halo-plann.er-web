@@ -67,9 +67,11 @@ export const DestinationAndDateStep = ({
     toggleIsGuestsInputOpen()
   }
 
-  const dateDisplay = trip_start_and_end_dates ?
-    `${format(trip_start_and_end_dates.from, "d' de 'LLL", { locale: ptBR })} até ${format(trip_start_and_end_dates.to, "d' de 'LLL", { locale: ptBR })}`
-    : null
+  const dateDisplay = trip_start_and_end_dates &&
+    trip_start_and_end_dates.from &&
+    trip_start_and_end_dates.to ?
+    `${format(trip_start_and_end_dates.from, "d' de 'LLL", { locale: ptBR })} até ${format(trip_start_and_end_dates.to, "d' de 'LLL", { locale: ptBR })}` :
+    null
 
   return (
     <div className="h-16 px-4 bg-zinc-900 rounded-xl flex items-center shadow-shape gap-3 relative">
