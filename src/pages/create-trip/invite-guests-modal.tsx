@@ -4,13 +4,16 @@ import { AtSign, Plus, UserPlus, X } from "lucide-react";
 
 import { Button } from "../../components/button";
 import { useFormContext } from "react-hook-form";
+import { Modal } from "../../components/modal";
 
 interface InviteGuestsModalProps {
+  isGuestsModalOpen: boolean
   toggleIsGuestsModalOpen: () => void
 }
 
 export const InviteGuestsModal = ({
   toggleIsGuestsModalOpen,
+  isGuestsModalOpen
 }: InviteGuestsModalProps) => {
   const [email, setEmail] = useState('')
 
@@ -38,23 +41,14 @@ export const InviteGuestsModal = ({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
-      <div className="w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold text-lg">Selecinar convidados</h2>
-
-            <button
-              className="size-8 rounded-lg flex items-center justify-center ring-white/60 hover:ring-1"
-              onClick={toggleIsGuestsModalOpen}
-            >
-              <X className="size-5 text-zinc-400" />
-            </button>
-          </div>
-          <p className="text-sm text-zinc-400">
-            Os convidados irão receber e-mails para confirmar a participação na viagem.
-          </p>
-        </div>
+    <Modal
+      heading="Adicionar convidados"
+      description="Os convidados irão receber e-mails para confirmar a participação na viagem."
+      isOpen={isGuestsModalOpen}
+      onClose={toggleIsGuestsModalOpen}
+      className="w-[640px]"
+    >
+      <>
 
         <div className="flex flex-wrap gap-2">
           {emailsToInvite.map((email, index) => (
@@ -94,7 +88,7 @@ export const InviteGuestsModal = ({
         </div>
 
         <small className="text-xs w-full text-zinc-400 text-right">Não é necessario informar seu e-mail aqui!</small>
-      </div>
-    </div>
-  );
+      </>
+    </Modal>
+  )
 }

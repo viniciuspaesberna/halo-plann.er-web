@@ -1,5 +1,6 @@
 import { X } from "lucide-react"
 import type { ComponentProps, ReactElement, ReactNode } from "react"
+import { cn } from "../utils/cn"
 
 interface ModalHeaderProps {
   heading: string
@@ -17,13 +18,14 @@ export const Modal = ({
   description,
   onClose,
   isOpen,
+  className,
   children
 }: ModalProps) => {
   return isOpen ? (
     <>
       <div onClick={onClose} className="fixed inset-0 z-30 bg-black/60 flex items-center justify-center" />
 
-      <div className="w-[640px] fixed z-40 rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className={cn("fixed z-40 rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", className)}>
         <ModalHeader
           heading={heading}
           description={description}
@@ -55,7 +57,7 @@ const ModalHeader = ({
       </div>
 
       {description && typeof description === "string" && (
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-zinc-400 text-left">
           {description}
         </p>
       )}

@@ -101,7 +101,7 @@ export const DestinationAndDateStep = ({
       </button>
 
       {isDatePickerOpen && (
-        <DatePickerModal closeDatePicker={closeDatePicker} />
+        <DatePickerModal closeDatePicker={closeDatePicker} isDatePickerOpen={isDatePickerOpen} />
       )}
 
       <div className="w-px h-6 bg-zinc-800" />

@@ -118,12 +118,14 @@ export const CreateTripPage = () => {
         {isGuestsModalOpen && (
           <InviteGuestsModal
             toggleIsGuestsModalOpen={toggleIsGuestsModalOpen}
+            isGuestsModalOpen={isGuestsModalOpen}
           />
         )}
 
         {isConfirmTripModalOpen && (
           <ConfirmTripModal
             toggleIsConfirmTripModalOpen={toggleIsConfirmTripModalOpen}
+            isConfirmTripModalOpen={isConfirmTripModalOpen}
             isLoading={isLoading}
           />
         )}

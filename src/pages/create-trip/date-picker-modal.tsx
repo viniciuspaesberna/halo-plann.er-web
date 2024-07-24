@@ -6,15 +6,51 @@ import { DayPicker } from "react-day-picker"
 import { X } from "lucide-react"
 
 import "react-day-picker/style.css"
+import { Modal } from "../../components/modal"
 
 interface DatePickerModalProps {
+  isDatePickerOpen: boolean
   closeDatePicker: () => void
 }
 
 export const DatePickerModal = ({
   closeDatePicker,
+  isDatePickerOpen
 }: DatePickerModalProps) => {
   const { control } = useFormContext()
+
+  return (
+    <Modal
+      heading="Selecione a data"
+      description="Selecione as datas de início e fim da viagem"
+      isOpen={isDatePickerOpen}
+      onClose={closeDatePicker}
+    >
+      <Controller
+        name="trip_start_and_end_dates"
+        control={control}
+        render={
+          ({ field }) => (
+            <DayPicker
+              {...field}
+              mode="range"
+              selected={field.value}
+              onSelect={field.onChange}
+              disabled={{ before: addDays(new Date(), 1) }}
+              classNames={{
+                chevron: 'fill-lime-300',
+                today: '',
+                selected: 'border-none text-zinc-950 font-bold bg-lime-300 rounded-full',
+                range_start: 'bg-lime-300 border-none rounded-l-full rounded-r-none',
+                range_middle: 'bg-lime-300/40 border-none rounded-none',
+                range_end: 'bg-lime-300 border-none rounded-l-none rounded-r-full',
+              }}
+            />
+          )
+        }
+      />
+    </Modal>
+  )
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
@@ -36,29 +72,7 @@ export const DatePickerModal = ({
           </p>
         </div>
 
-        <Controller
-          name="trip_start_and_end_dates"
-          control={control}
-          render={
-            ({ field }) => (
-              <DayPicker
-                {...field}
-                mode="range"
-                selected={field.value}
-                onSelect={field.onChange}
-                disabled={{ before: addDays(new Date(), 1) }}
-                classNames={{
-                  chevron: 'fill-lime-300',
-                  today: '',
-                  selected: 'border-none text-zinc-950 font-bold bg-lime-300 rounded-full',
-                  range_start: 'bg-lime-300 border-none rounded-l-full rounded-r-none',
-                  range_middle: 'bg-lime-300/40 border-none rounded-none',
-                  range_end: 'bg-lime-300 border-none rounded-l-none rounded-r-full',
-                }}
-              />
-            )
-          }
-        />
+
       </div>
     </div>
   )
