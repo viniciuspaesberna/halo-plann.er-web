@@ -1,28 +1,15 @@
-import { Calendar, MapPin, Settings2 } from "lucide-react"
-
-import { Button } from "../../components/button"
-import { useEffect, useState } from "react"
-import { api } from "../../lib/axios"
-import { useParams } from "react-router-dom"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 
-type Trip = {
-  id: string
-  destination: string
-  starts_at: string
-  ends_at: string
-  is_confirmed: boolean
-}
+import { Calendar, MapPin, Settings2 } from "lucide-react"
+
+import { Button } from "../../components/button"
+import { useTripDetails } from "../../contexts/trip-details-context"
+
+
 
 export const TripDetailsHeader = () => {
-  const [trip, setTrip] = useState<Trip | undefined>()
-
-  const { tripId } = useParams()
-
-  useEffect(() => {
-    api.get(`/trips/${tripId}`).then(response => setTrip(response.data.trip))
-  }, [tripId])
+  const { trip } = useTripDetails()
 
   const dateDisplay = trip ?
     `${format(trip.starts_at, "d' de 'LLL", { locale: ptBR })} até ${format(trip.ends_at, "d' de 'LLL", { locale: ptBR })}`

@@ -1,8 +1,8 @@
 import { CircleCheck, CircleDashed, UserCog } from "lucide-react";
 import { Button } from "../../components/button";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { api } from "../../lib/axios";
+import { useTripDetails } from "../../contexts/trip-details-context";
 
 type Participant = {
   id: string
@@ -14,7 +14,7 @@ type Participant = {
 export const Participants = () => {
   const [participants, setParticipants] = useState<Participant[]>([])
 
-  const { tripId } = useParams()
+  const { tripId } = useTripDetails()
 
   useEffect(() => {
     api.get(`/trips/${tripId}/participants`).then(response => setParticipants(response.data.participants))
@@ -48,5 +48,3 @@ export const Participants = () => {
     </div>
   )
 }
-
-export default Participants;

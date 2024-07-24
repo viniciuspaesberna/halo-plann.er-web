@@ -2,10 +2,10 @@ import { format } from "date-fns";
 import { CircleCheck, Plus } from "lucide-react";
 import { ptBR } from "date-fns/locale";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 import { Button } from "../../components/button";
 import { api } from "../../lib/axios";
+import { useTripDetails } from "../../contexts/trip-details-context";
 
 interface TripScheduleProps {
   openCreateActivityModal: () => void
@@ -23,7 +23,7 @@ type Activity = {
 export const Activities = ({ openCreateActivityModal }: TripScheduleProps) => {
   const [activities, setActivities] = useState<Activity[]>([])
 
-  const { tripId } = useParams()
+  const { tripId } = useTripDetails()
 
   useEffect(() => {
     api.get(`/trips/${tripId}/activities`).then(response => setActivities(response.data.activities))
