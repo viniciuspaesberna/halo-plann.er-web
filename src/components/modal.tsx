@@ -2,14 +2,8 @@ import { X } from "lucide-react"
 import type { ComponentProps, ReactElement, ReactNode } from "react"
 import { cn } from "../utils/cn"
 
-interface ModalHeaderProps {
-  heading: string
-  description?: string | ReactElement<any, string | React.JSXElementConstructor<any>> | ReactNode
-  onClose: () => void
-}
-
 interface ModalProps extends ComponentProps<'div'>, ModalHeaderProps {
-  isOpen: boolean
+  isOpen?: boolean
   children: ReactNode
 }
 
@@ -17,7 +11,7 @@ export const Modal = ({
   heading,
   description,
   onClose,
-  isOpen,
+  isOpen = true,
   className,
   children
 }: ModalProps) => {
@@ -25,7 +19,11 @@ export const Modal = ({
     <>
       <div onClick={onClose} className="fixed inset-0 z-30 bg-black/60 flex items-center justify-center" />
 
-      <div className={cn("fixed z-40 rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", className)}>
+      <div
+        tabIndex={0}
+        onKeyDown={e => e.code === "Escape" && onClose()}
+        className={cn("fixed z-40 rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", className)}
+      >
         <ModalHeader
           heading={heading}
           description={description}
@@ -36,6 +34,12 @@ export const Modal = ({
       </div>
     </>
   ) : null
+}
+
+interface ModalHeaderProps {
+  heading: string
+  description?: string | ReactElement<any, string | React.JSXElementConstructor<any>> | ReactNode
+  onClose: () => void
 }
 
 const ModalHeader = ({
