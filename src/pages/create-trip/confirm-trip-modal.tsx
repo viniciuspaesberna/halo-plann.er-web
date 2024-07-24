@@ -39,7 +39,7 @@ export const ConfirmTripModal = ({
           <p className="text-sm text-zinc-400">
             Para concluir a criação de viagem para
             <span className="text-zinc-100 font-semibold ml-1">{destination}</span>,
-            de {` `} {dateDisplay} {` `}
+            de {` `} <span className="text-zinc-100 font-semibold ml-1">{dateDisplay}</span>, {` `}
             preencha seus dados abaixo:
           </p>
         </div>
@@ -52,12 +52,17 @@ export const ConfirmTripModal = ({
               name="ownerName"
               control={control}
               render={
-                ({ field }) => (
-                  <input
-                    {...field}
-                    placeholder="Seu nome completo"
-                    className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
-                  />
+                ({ field, formState: { errors } }) => (
+                  <>
+                    <input
+                      {...field}
+                      placeholder="Seu nome completo"
+                      className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+                    />
+                    {errors.ownerName && (
+                      <small className="text-zinc-400">{errors.ownerName.message?.toString()}</small>
+                    )}
+                  </>
                 )
               }
             />
@@ -70,23 +75,28 @@ export const ConfirmTripModal = ({
               name="ownerEmail"
               control={control}
               render={
-                ({ field }) => (
-                  <input
-                    {...field}
-                    type="email"
-                    placeholder="Seu e-mail pessoal"
-                    className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
-                  />
+                ({ field, formState: { errors } }) => (
+                  <>
+                    <input
+                      {...field}
+                      type="email"
+                      placeholder="Seu e-mail pessoal"
+                      className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+                    />
+                    {errors.ownerEmail && (
+                      <small className="text-zinc-400">{errors.ownerEmail.message?.toString()}</small>
+                    )}
+                  </>
                 )
               }
             />
           </div>
 
-          <Button type="submit" form="create_trip" size="full" disabled={isLoading}>
+          <Button type="submit" isLoading={isLoading} form="create_trip" size="full">
             Confirmar criação de viagem
           </Button>
         </div>
       </div>
-    </div>
+    </div >
   )
 }

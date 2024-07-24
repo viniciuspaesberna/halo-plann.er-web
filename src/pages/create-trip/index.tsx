@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { cn } from "../../utils/cn"
 import { api } from "../../lib/axios"
@@ -40,7 +40,6 @@ export const CreateTripPage = () => {
     setIsConfirmTripModalOpen(!isConfirmTripModalOpen)
   }
 
-
   async function createTrip(data: CreateTripFormData) {
     const {
       destination,
@@ -56,6 +55,12 @@ export const CreateTripPage = () => {
 
     if (emailsToInvite.includes(ownerEmail)) {
       validatedEmailsToInvite = emailsToInvite.filter(email => email !== ownerEmail)
+    }
+
+    if (!trip_start_and_end_dates || !trip_start_and_end_dates.from || !trip_start_and_end_dates.to) {
+      return form.setError('trip_start_and_end_dates', {
+        message: 'Datas de início e fim da viagem são obrigatórias'
+      })
     }
 
     await api.post<{ tripId: string }>('trips', {

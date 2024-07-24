@@ -1,13 +1,14 @@
+import { z } from "zod";
+import { useState } from "react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Controller, useFormContext } from "react-hook-form";
+
 import { ArrowRight, Calendar, MapPin, Settings2 } from "lucide-react";
 
-import { Button } from "../../../components/button";
-import { useState } from "react";
 import { DatePickerModal } from "../date-picker-modal";
-import { format } from "date-fns";
+import { Button } from "../../../components/button";
 import { cn } from "../../../utils/cn";
-import { Controller, useFormContext } from "react-hook-form";
-import { z } from "zod";
-import { ptBR } from "date-fns/locale";
 
 interface DestinationAndDateStepProps {
   isGuestsInputOpen: boolean
@@ -86,7 +87,6 @@ export const DestinationAndDateStep = ({
                 placeholder="Para onde você vai?"
                 className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
               />
-
             )
           }
         />
