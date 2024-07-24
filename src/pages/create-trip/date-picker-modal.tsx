@@ -41,7 +41,7 @@ export const DatePickerModal = ({
               disabled={{ before: addDays(new Date(), 1) }}
               classNames={{
                 chevron: 'fill-lime-300',
-                today: '',
+                today: 'bg-zinc-700 rounded-full',
                 selected: 'border-none text-zinc-950 font-bold bg-lime-300 rounded-full',
                 range_start: 'bg-lime-300 border-none rounded-l-full rounded-r-none',
                 range_middle: 'bg-lime-300/40 border-none rounded-none',
