@@ -7,6 +7,7 @@ import { X } from "lucide-react"
 
 import "react-day-picker/style.css"
 import { Modal } from "../../components/modal"
+import { ptBR } from "date-fns/locale"
 
 interface DatePickerModalProps {
   isDatePickerOpen: boolean
@@ -34,6 +35,7 @@ export const DatePickerModal = ({
             <DayPicker
               {...field}
               mode="range"
+              locale={ptBR}
               selected={field.value}
               onSelect={field.onChange}
               disabled={{ before: addDays(new Date(), 1) }}
