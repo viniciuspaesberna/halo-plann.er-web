@@ -32,7 +32,10 @@ export const Participants = () => {
               <span
                 className="font-medium text-zinc-100 truncate flex items-baseline gap-2"
               >
-                {participant.name || 'Não confirmado'}
+                {participant.name && participant.name}
+                {!participant.name && !participant.is_confirmed && 'Não confirmado'}
+                {!participant.name && participant.is_confirmed && 'Nome não informado'}
+
                 <small className="text-xs text-zinc-600">{participant.is_owner ? 'Organizador' : `Convidado ${index}`}</small>
               </span>
 
