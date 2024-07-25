@@ -55,6 +55,7 @@ export const TripDetailsPage = () => {
       {isCreateActivityModalOpen && (
         <CreateActivityModal
           closeCreateActivityModal={closeCreateActivityModal}
+          isCreateActivityModalOpen={isCreateActivityModalOpen}
         />
       )}
     </div>
