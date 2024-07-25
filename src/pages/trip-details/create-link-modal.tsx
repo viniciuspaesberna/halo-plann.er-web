@@ -58,7 +58,7 @@ export const CreateLinkModal = ({
       onClose={onClose}
       className="max-w-[640px] w-full"
     >
-      <form onSubmit={handleSubmit(createLink)} className="space-y-2">
+      <form onSubmit={handleSubmit(createLink)} className="space-y-3">
         <div className="h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-4">
           <Tag className="size-5 ml-2 text-zinc-400" />
 
