@@ -9,6 +9,7 @@ type Participant = {
   name: string | null
   email: string
   is_confirmed: boolean
+  is_owner: boolean
 }
 
 export const Participants = () => {
@@ -28,7 +29,13 @@ export const Participants = () => {
         {participants.map((participant, index) => (
           <div key={participant.id} className="flex gap-4 items-center justify-between">
             <div className="space-y-1.5">
-              <span className="block font-medium text-zinc-100 truncate">{participant.name || `Convidado ${index}`}</span>
+              <span
+                className="font-medium text-zinc-100 truncate flex items-baseline gap-2"
+              >
+                {participant.name || 'Não confirmado'}
+                <small className="text-xs text-zinc-600">{participant.is_owner ? 'Organizador' : `Convidado ${index}`}</small>
+              </span>
+
               <span className="block text-sm text-zinc-400 truncate">{participant.email}</span>
             </div>
 

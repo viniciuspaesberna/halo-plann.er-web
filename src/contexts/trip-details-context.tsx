@@ -28,8 +28,6 @@ export const TripDetailsProvider = ({ children }: { children: ReactNode }) => {
 
   if (!trip) return 'Trip not found'
 
-  console.log(trip)
-
   return (
     <tripDetailsContext.Provider value={{
       tripId,

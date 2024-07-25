@@ -1,40 +1,50 @@
 import { Calendar, Tag } from "lucide-react"
 import { Button } from "../../components/button"
-import { useState, type FormEvent } from "react"
+import { useState } from "react"
 import { api } from "../../lib/axios"
 import { useTripDetails } from "../../contexts/trip-details-context"
 import { Modal } from "../../components/modal"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
 
 interface CreateActivityModalProps {
-  isCreateActivityModalOpen: boolean
-  closeCreateActivityModal: () => void
+  isOpen: boolean
+  onClose: () => void
 }
 
+const createActivityFormSchema = z.object({
+  title: z.string({ required_error: "Título é obrigatório" }).min(3, { message: "Título deve conter pelo menos 3 letras" }),
+  occurs_at: z.coerce.date()
+})
+
+type CreateActivityFormData = z.infer<typeof createActivityFormSchema>
+
 export const CreateActivityModal = ({
-  closeCreateActivityModal,
-  isCreateActivityModalOpen
+  onClose,
+  isOpen
 }: CreateActivityModalProps) => {
   const { tripId } = useTripDetails()
 
+  const { handleSubmit, register, formState: { errors } } = useForm<CreateActivityFormData>({
+    resolver: zodResolver(createActivityFormSchema)
+  })
+
   const [isLoading, setIsLoading] = useState(false)
 
-  async function createActivity(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  async function createActivity(data: CreateActivityFormData) {
 
-    const data = new FormData(event.currentTarget)
-
-    const title = data.get('title')?.toString()
-    const occurs_at = data.get('occurs_at')?.toString()
+    const { title, occurs_at } = data
 
     setIsLoading(true)
     await api.post(`/trips/${tripId}/activities`, {
       title,
       occurs_at
     }).then(() => {
-      setIsLoading(false)
       window.document.location.reload()
     }).catch(error => {
       console.log(error)
+    }).finally(() => {
       setIsLoading(false)
     })
   }
@@ -43,19 +53,23 @@ export const CreateActivityModal = ({
     <Modal
       heading="Cadastrar atividade"
       description="Todos convidados podem ver as atividades."
-      onClose={closeCreateActivityModal}
-      isOpen={isCreateActivityModalOpen}
+      onClose={onClose}
+      isOpen={isOpen}
       className="max-w-[640px] w-full"
     >
-      <form onSubmit={createActivity} className="space-y-3">
+      <form onSubmit={handleSubmit(createActivity)} className="space-y-3">
         <div className="h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-4">
           <Tag className="size-5 ml-2 text-zinc-400" />
 
           <input
-            name="title"
             placeholder="Qual a atividade?"
             className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+            {...register('title')}
           />
+
+          {errors.title && (
+            <small className="text-sm text-zinc-400">{errors.title.message}</small>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
@@ -63,10 +77,10 @@ export const CreateActivityModal = ({
             <Calendar className="size-5 ml-2 text-zinc-400" />
 
             <input
-              name="occurs_at"
               type="datetime-local"
               placeholder="Data e horário da atividade"
               className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+              {...register('occurs_at')}
             />
           </div>
         </div>

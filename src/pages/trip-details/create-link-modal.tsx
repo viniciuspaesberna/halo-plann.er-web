@@ -42,10 +42,11 @@ export const CreateLinkModal = ({
       title,
       url
     }).then(() => {
-      setIsLoading(false)
       window.document.location.reload()
     }).catch((error) => {
       console.log(error)
+    }).finally(() => {
+      setIsLoading(false)
     })
   }
 

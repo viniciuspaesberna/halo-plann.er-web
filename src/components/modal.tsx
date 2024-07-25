@@ -17,7 +17,7 @@ export const Modal = ({
 }: ModalProps) => {
   return isOpen ? (
     <>
-      <div onClick={onClose} className="fixed inset-0 z-30 bg-black/60 flex items-center justify-center" />
+      <div onClick={onClose} className="fixed inset-0 z-30 flex bg-black/60 items-center justify-center backdrop-blur-sm" />
 
       <div
         tabIndex={0}

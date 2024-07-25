@@ -8,7 +8,7 @@ import { api } from "../../lib/axios";
 import { useTripDetails } from "../../contexts/trip-details-context";
 
 interface TripScheduleProps {
-  openCreateActivityModal: () => void
+  onOpenCreateActivityModal: () => void
 }
 
 type Activity = {
@@ -20,21 +20,21 @@ type Activity = {
   }[]
 }
 
-export const Activities = ({ openCreateActivityModal }: TripScheduleProps) => {
+export const Activities = ({ onOpenCreateActivityModal }: TripScheduleProps) => {
   const [activities, setActivities] = useState<Activity[]>([])
 
   const { tripId } = useTripDetails()
 
   useEffect(() => {
     api.get(`/trips/${tripId}/activities`).then(response => setActivities(response.data.activities))
-  }, [tripId, activities])
+  }, [tripId])
 
   return (
     <div className="flex-1 space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-semibold">Atividades</h2>
 
-        <Button onClick={openCreateActivityModal}>
+        <Button onClick={onOpenCreateActivityModal}>
           <Plus className="size-5" />
           Cadastrar atividade
         </Button>

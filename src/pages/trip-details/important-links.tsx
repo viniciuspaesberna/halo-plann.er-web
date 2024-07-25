@@ -5,7 +5,6 @@ import { Link2, Plus } from "lucide-react";
 import { api } from "../../lib/axios";
 import { Button } from "../../components/button";
 import { useTripDetails } from "../../contexts/trip-details-context";
-import { CreateLinkModal } from "./create-link-modals";
 
 
 type Link = {
@@ -14,8 +13,11 @@ type Link = {
   url: string;
 }
 
-export const ImportantLinks = () => {
-  const [isCreateLinksModalOpen, setIsCreateLinksModalOpen] = useState(false)
+interface ImportantLinksProps {
+  onOpenCreateLinkModal: () => void
+}
+
+export const ImportantLinks = ({ onOpenCreateLinkModal }: ImportantLinksProps) => {
   const [links, setLinks] = useState<Link[]>([])
 
   const { tripId } = useTripDetails()
@@ -41,18 +43,16 @@ export const ImportantLinks = () => {
         ))}
 
         {links.length === 0 && (
-          <span className="text-zinc-400 w-full flex items-center justify-center gap-2">
-            Cadastre links importantes sobre a viagem.
+          <span className="text-zinc-400 text-left w-full">
+            Cadastre links importantes para viagem.
           </span>
         )}
       </div>
 
-      <Button onClick={() => setIsCreateLinksModalOpen(true)} variant="secondary" size="full">
+      <Button onClick={onOpenCreateLinkModal} variant="secondary" size="full">
         <Plus className="size-5" />
         Cadastrar novo link
       </Button>
-
-      <CreateLinkModal isOpen={isCreateLinksModalOpen} onClose={() => setIsCreateLinksModalOpen(false)} />
     </div>
   );
 }
