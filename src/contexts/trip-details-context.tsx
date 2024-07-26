@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../lib/axios";
+import { LoadingPage } from "../pages/loading";
 
 export type Trip = {
   id: string
@@ -12,13 +13,13 @@ export type Trip = {
 
 type TripDetailsContextData = {
   tripId: string | undefined
-  trip: Trip | undefined
+  trip: Trip
 }
 
 const tripDetailsContext = createContext({} as TripDetailsContextData)
 
 export const TripDetailsProvider = ({ children }: { children: ReactNode }) => {
-  const [trip, setTrip] = useState<Trip | undefined>()
+  const [trip, setTrip] = useState<Trip>()
 
   const { tripId } = useParams()
 
@@ -26,7 +27,7 @@ export const TripDetailsProvider = ({ children }: { children: ReactNode }) => {
     api.get(`/trips/${tripId}`).then(response => setTrip(response.data.trip))
   }, [tripId])
 
-  if (!trip) return 'Trip not found'
+  if (!trip) return <LoadingPage />
 
   return (
     <tripDetailsContext.Provider value={{

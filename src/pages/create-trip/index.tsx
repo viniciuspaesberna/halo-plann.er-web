@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { cn } from "../../utils/cn"
 import { api } from "../../lib/axios"
 import { createTripFormSchema, type CreateTripFormData } from "../../schemas/create-trip-form"
 
@@ -84,10 +83,7 @@ export const CreateTripPage = () => {
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(createTrip)} id="create_trip" className="h-screen flex items-center justify-center bg-pattern bg-no-repeat bg-center">
 
-        <div className={cn(
-          "max-w-3xl w-full px-6 text-center space-y-10",
-          isGuestsModalOpen && "blur-sm"
-        )}>
+        <div className="max-w-3xl w-full px-6 text-center space-y-10">
           <div className="flex flex-col items-center gap-3">
             <img src="/logo.svg" alt="" />
             <p className="text-zinc-300 text-lg">Convide seus amigos e planeje sua próxima viagem!</p>
@@ -130,6 +126,6 @@ export const CreateTripPage = () => {
           />
         )}
       </form>
-    </FormProvider>
+    </FormProvider >
   )
 }
