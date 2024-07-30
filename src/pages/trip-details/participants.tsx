@@ -1,10 +1,11 @@
-import { CircleCheck, CircleDashed, UserCog } from "lucide-react";
-import { Button } from "../../components/button";
-import { useEffect, useState } from "react";
-import { api } from "../../lib/axios";
-import { useTripDetails } from "../../contexts/trip-details-context";
+import { CircleCheck, CircleDashed, UserCog } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-type Participant = {
+import { Button } from '../../components/button'
+import { useTripDetails } from '../../contexts/trip-details-context'
+import { api } from '../../lib/axios'
+
+export type Participant = {
   id: string
   name: string | null
   email: string
@@ -18,34 +19,45 @@ export const Participants = () => {
   const { tripId } = useTripDetails()
 
   useEffect(() => {
-    api.get(`/trips/${tripId}/participants`).then(response => setParticipants(response.data.participants))
+    api
+      .get(`/trips/${tripId}/participants`)
+      .then((response) => setParticipants(response.data.participants))
   }, [tripId])
 
   return (
     <div className="space-y-6">
-      <h2 className="font-semibold text-xl">Convidados</h2>
+      <h2 className="text-xl font-semibold">Convidados</h2>
 
       <div className="space-y-5">
         {participants.map((participant, index) => (
-          <div key={participant.id} className="flex gap-4 items-center justify-between">
+          <div
+            key={participant.id}
+            className="flex items-center justify-between gap-4"
+          >
             <div className="space-y-1.5">
-              <span
-                className="font-medium text-zinc-100 truncate flex items-baseline gap-2"
-              >
+              <span className="flex items-baseline gap-2 truncate font-medium text-zinc-100">
                 {participant.name && participant.name}
-                {!participant.name && !participant.is_confirmed && 'Não confirmado'}
-                {!participant.name && participant.is_confirmed && 'Nome não informado'}
+                {!participant.name &&
+                  !participant.is_confirmed &&
+                  'Não confirmado'}
+                {!participant.name &&
+                  participant.is_confirmed &&
+                  'Nome não informado'}
 
-                <small className="text-xs text-zinc-600">{participant.is_owner ? 'Organizador' : `Convidado ${index}`}</small>
+                <small className="text-xs text-zinc-600">
+                  {participant.is_owner ? 'Organizador' : `Convidado ${index}`}
+                </small>
               </span>
 
-              <span className="block text-sm text-zinc-400 truncate">{participant.email}</span>
+              <span className="block truncate text-sm text-zinc-400">
+                {participant.email}
+              </span>
             </div>
 
             {participant.is_confirmed ? (
-              <CircleCheck className="shrink-0 text-lime-300 size-5" />
+              <CircleCheck className="size-5 shrink-0 text-lime-300" />
             ) : (
-              <CircleDashed className="shrink-0 text-zinc-400 size-5" />
+              <CircleDashed className="size-5 shrink-0 text-zinc-400" />
             )}
           </div>
         ))}

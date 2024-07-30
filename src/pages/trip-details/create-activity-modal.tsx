@@ -1,12 +1,13 @@
-import { Calendar, Tag } from "lucide-react"
-import { Button } from "../../components/button"
-import { useState } from "react"
-import { api } from "../../lib/axios"
-import { useTripDetails } from "../../contexts/trip-details-context"
-import { Modal } from "../../components/modal"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Calendar, Tag } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { Button } from '../../components/button'
+import { Modal } from '../../components/modal'
+import { useTripDetails } from '../../contexts/trip-details-context'
+import { api } from '../../lib/axios'
 
 interface CreateActivityModalProps {
   isOpen: boolean
@@ -14,39 +15,48 @@ interface CreateActivityModalProps {
 }
 
 const createActivityFormSchema = z.object({
-  title: z.string({ required_error: "Título é obrigatório" }).min(3, { message: "Título deve conter pelo menos 3 letras" }),
-  occurs_at: z.coerce.date()
+  title: z
+    .string({ required_error: 'Título é obrigatório' })
+    .min(3, { message: 'Título deve conter pelo menos 3 letras' }),
+  occurs_at: z.coerce.date(),
 })
 
 type CreateActivityFormData = z.infer<typeof createActivityFormSchema>
 
 export const CreateActivityModal = ({
   onClose,
-  isOpen
+  isOpen,
 }: CreateActivityModalProps) => {
   const { tripId } = useTripDetails()
 
-  const { handleSubmit, register, formState: { errors } } = useForm<CreateActivityFormData>({
-    resolver: zodResolver(createActivityFormSchema)
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<CreateActivityFormData>({
+    resolver: zodResolver(createActivityFormSchema),
   })
 
   const [isLoading, setIsLoading] = useState(false)
 
   async function createActivity(data: CreateActivityFormData) {
-
     const { title, occurs_at } = data
 
     setIsLoading(true)
-    await api.post(`/trips/${tripId}/activities`, {
-      title,
-      occurs_at
-    }).then(() => {
-      window.document.location.reload()
-    }).catch(error => {
-      console.log(error)
-    }).finally(() => {
-      setIsLoading(false)
-    })
+    await api
+      .post(`/trips/${tripId}/activities`, {
+        title,
+        occurs_at,
+      })
+      .then(() => {
+        window.document.location.reload()
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return (
@@ -55,11 +65,11 @@ export const CreateActivityModal = ({
       description="Todos convidados podem ver as atividades."
       onClose={onClose}
       isOpen={isOpen}
-      className="max-w-[640px] w-full"
+      className="w-full max-w-[640px]"
     >
       <form onSubmit={handleSubmit(createActivity)} className="space-y-3">
-        <div className="h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-4">
-          <Tag className="size-5 ml-2 text-zinc-400" />
+        <div className="flex h-14 items-center gap-4 rounded-lg border border-zinc-800 bg-zinc-950 px-4">
+          <Tag className="ml-2 size-5 text-zinc-400" />
 
           <input
             placeholder="Qual a atividade?"
@@ -68,13 +78,15 @@ export const CreateActivityModal = ({
           />
 
           {errors.title && (
-            <small className="text-sm text-zinc-400">{errors.title.message}</small>
+            <small className="text-sm text-zinc-400">
+              {errors.title.message}
+            </small>
           )}
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="h-14 flex-1 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-4">
-            <Calendar className="size-5 ml-2 text-zinc-400" />
+          <div className="flex h-14 flex-1 items-center gap-4 rounded-lg border border-zinc-800 bg-zinc-950 px-4">
+            <Calendar className="ml-2 size-5 text-zinc-400" />
 
             <input
               type="datetime-local"

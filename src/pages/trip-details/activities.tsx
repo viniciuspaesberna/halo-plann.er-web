@@ -1,11 +1,11 @@
-import { format } from "date-fns";
-import { CircleCheck, Plus } from "lucide-react";
-import { ptBR } from "date-fns/locale";
-import { useEffect, useState } from "react";
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { CircleCheck, Plus } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-import { Button } from "../../components/button";
-import { api } from "../../lib/axios";
-import { useTripDetails } from "../../contexts/trip-details-context";
+import { Button } from '../../components/button'
+import { useTripDetails } from '../../contexts/trip-details-context'
+import { api } from '../../lib/axios'
 
 interface TripScheduleProps {
   onOpenCreateActivityModal: () => void
@@ -20,13 +20,17 @@ type Activity = {
   }[]
 }
 
-export const Activities = ({ onOpenCreateActivityModal }: TripScheduleProps) => {
+export const Activities = ({
+  onOpenCreateActivityModal,
+}: TripScheduleProps) => {
   const [activities, setActivities] = useState<Activity[]>([])
 
   const { tripId } = useTripDetails()
 
   useEffect(() => {
-    api.get(`/trips/${tripId}/activities`).then(response => setActivities(response.data.activities))
+    api
+      .get(`/trips/${tripId}/activities`)
+      .then((response) => setActivities(response.data.activities))
   }, [tripId])
 
   return (
@@ -41,41 +45,48 @@ export const Activities = ({ onOpenCreateActivityModal }: TripScheduleProps) => 
       </div>
 
       <div className="space-y-8">
-        {activities.map(activity => {
+        {activities.map((activity) => {
           const day = format(activity.date, 'd')
           const weekDay = format(activity.date, 'EEEE', { locale: ptBR })
 
           return (
             <div key={activity.date} className="space-y-2.5">
-              <div className="flex gap-2 items-baseline">
-                <span className="text-xl font-semibold text-zinc-300">Dia {day}</span>
+              <div className="flex items-baseline gap-2">
+                <span className="text-xl font-semibold text-zinc-300">
+                  Dia {day}
+                </span>
                 <span className="text-xs text-zinc-500">{weekDay}</span>
               </div>
 
               {activity.activities.length > 0 ? (
                 <div className="space-y-2.5">
-                  {activity.activities.map(category => {
-                    const formatedHour = format(category.occurs_at, "HH:mm")
+                  {activity.activities.map((category) => {
+                    const formatedHour = format(category.occurs_at, 'HH:mm')
 
                     return (
-                      <div key={category.id} className="px-4 py-2.5 bg-zinc-900 rounded-xl shadow-shape flex items-center gap-3 relative">
+                      <div
+                        key={category.id}
+                        className="relative flex items-center gap-3 rounded-xl bg-zinc-900 px-4 py-2.5 shadow-shape"
+                      >
                         <CircleCheck className="size-5 text-lime-300" />
-                        <span className="text-zinc-100">
-                          {category.title}
-                        </span>
+                        <span className="text-zinc-100">{category.title}</span>
 
-                        <span className="ml-auto text-zinc-400 text-sm">{formatedHour}h</span>
+                        <span className="ml-auto text-sm text-zinc-400">
+                          {formatedHour}h
+                        </span>
                       </div>
                     )
                   })}
                 </div>
               ) : (
-                <p className="text-zinc-500 text-sm">Nenhuma Atividade cadastrada nessa data, bora relaxar!</p>
+                <p className="text-sm text-zinc-500">
+                  Nenhuma Atividade cadastrada nessa data, bora relaxar!
+                </p>
               )}
             </div>
           )
         })}
       </div>
     </div>
-  );
+  )
 }

@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { AtSign, Plus, UserPlus, X } from 'lucide-react'
+import { useState } from 'react'
+import { useFormContext } from 'react-hook-form'
 
-import { AtSign, Plus, UserPlus, X } from "lucide-react";
-
-import { Button } from "../../components/button";
-import { useFormContext } from "react-hook-form";
-import { Modal } from "../../components/modal";
+import { Button } from '../../components/button'
+import { Modal } from '../../components/modal'
 
 interface InviteGuestsModalProps {
   isGuestsModalOpen: boolean
@@ -13,7 +12,7 @@ interface InviteGuestsModalProps {
 
 export const InviteGuestsModal = ({
   toggleIsGuestsModalOpen,
-  isGuestsModalOpen
+  isGuestsModalOpen,
 }: InviteGuestsModalProps) => {
   const [email, setEmail] = useState('')
 
@@ -35,7 +34,9 @@ export const InviteGuestsModal = ({
   }
 
   function removeEmailToInvite(emailToRemove: string) {
-    const newEmails = emailsToInvite.filter((email: string) => email !== emailToRemove)
+    const newEmails = emailsToInvite.filter(
+      (email: string) => email !== emailToRemove,
+    )
 
     setValue('emailsToInvite', newEmails)
   }
@@ -49,18 +50,23 @@ export const InviteGuestsModal = ({
       className="w-[640px]"
     >
       <>
-
         <div className="flex flex-wrap gap-2">
           {emailsToInvite.map((email, index) => (
-            <div key={email + index} className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
+            <div
+              key={email + index}
+              className="flex items-center gap-2 rounded-md bg-zinc-800 px-2.5 py-1.5"
+            >
               <span className="text-zinc-300">{email}</span>
 
-              <X onClick={() => removeEmailToInvite(email)} className="size-4 text-zinc-400 cursor-pointer hover:scale-105" />
+              <X
+                onClick={() => removeEmailToInvite(email)}
+                className="size-4 cursor-pointer text-zinc-400 hover:scale-105"
+              />
             </div>
           ))}
 
           {emailsToInvite.length === 0 && (
-            <p className="text-sm text-zinc-400 my-4 gap-2 w-full flex items-center justify-center">
+            <p className="my-4 flex w-full items-center justify-center gap-2 text-sm text-zinc-400">
               <UserPlus className="size-5" />
               Convide amigos para sua viagem!
             </p>
@@ -69,15 +75,15 @@ export const InviteGuestsModal = ({
 
         <div className="h-px w-full bg-zinc-800" />
 
-        <div className="p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2">
-          <AtSign className="size-5 ml-2 text-zinc-400" />
+        <div className="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-950 p-2.5">
+          <AtSign className="ml-2 size-5 text-zinc-400" />
 
           <input
             type="email"
             name="email"
             placeholder="Digite o email do convidado"
             className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             value={email}
           />
 
@@ -87,7 +93,9 @@ export const InviteGuestsModal = ({
           </Button>
         </div>
 
-        <small className="text-xs w-full text-zinc-400 text-right">Não é necessario informar seu e-mail aqui!</small>
+        <small className="w-full text-right text-xs text-zinc-400">
+          Não é necessario informar seu e-mail aqui!
+        </small>
       </>
     </Modal>
   )

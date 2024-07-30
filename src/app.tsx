@@ -1,13 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { CreateTripPage } from "./pages/create-trip"
-import { TripDetailsPage } from "./pages/trip-details"
-import { TripDetailsProvider } from "./contexts/trip-details-context"
-import { ConfirmParticipationPage } from "./pages/confirm-participation"
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+
+import { TripDetailsProvider } from './contexts/trip-details-context'
+import { ConfirmParticipationPage } from './pages/confirm-participation'
+import { CreateTripPage } from './pages/create-trip'
+import { TripDetailsPage } from './pages/trip-details'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <CreateTripPage />
+    element: <CreateTripPage />,
   },
   {
     path: '/trips/:tripId',
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
       <TripDetailsProvider>
         <TripDetailsPage />
       </TripDetailsProvider>
-    )
+    ),
   },
   {
     path: '/trips/:tripId/participants/:participantId/confirm',
@@ -23,12 +24,10 @@ const router = createBrowserRouter([
       <TripDetailsProvider>
         <ConfirmParticipationPage />
       </TripDetailsProvider>
-    )
-  }
+    ),
+  },
 ])
 
 export const App = () => {
-  return (
-    <RouterProvider router={router} />
-  )
+  return <RouterProvider router={router} />
 }

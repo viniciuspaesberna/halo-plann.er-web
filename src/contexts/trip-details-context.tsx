@@ -1,7 +1,14 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { useParams } from "react-router-dom";
-import { api } from "../lib/axios";
-import { LoadingPage } from "../pages/loading";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { useParams } from 'react-router-dom'
+
+import { api } from '../lib/axios'
+import { LoadingPage } from '../pages/loading'
 
 export type Trip = {
   id: string
@@ -24,16 +31,18 @@ export const TripDetailsProvider = ({ children }: { children: ReactNode }) => {
   const { tripId } = useParams()
 
   useEffect(() => {
-    api.get(`/trips/${tripId}`).then(response => setTrip(response.data.trip))
+    api.get(`/trips/${tripId}`).then((response) => setTrip(response.data.trip))
   }, [tripId])
 
   if (!trip) return <LoadingPage />
 
   return (
-    <tripDetailsContext.Provider value={{
-      tripId,
-      trip
-    }}>
+    <tripDetailsContext.Provider
+      value={{
+        tripId,
+        trip,
+      }}
+    >
       {children}
     </tripDetailsContext.Provider>
   )

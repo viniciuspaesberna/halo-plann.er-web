@@ -1,22 +1,22 @@
-import { ComponentProps, forwardRef, ForwardRefRenderFunction, ReactElement } from "react"
-import { FieldErrors, FieldValues } from "react-hook-form"
+import {
+  ComponentProps,
+  forwardRef,
+  ForwardRefRenderFunction,
+  ReactElement,
+} from 'react'
+import { FieldErrors, FieldValues } from 'react-hook-form'
 
 interface InputProps extends ComponentProps<'input'> {
   errors?: FieldErrors<FieldValues>
-  icon?: ReactElement<any, string | React.JSXElementConstructor<any>>
+  icon?: ReactElement<unknown, string | React.JSXElementConstructor<unknown>>
 }
 
-const InputBase: ForwardRefRenderFunction<
-  HTMLInputElement, 
-  InputProps
-> = ({
-  errors,
-  name,
-  icon,
-  ...rest
-}, ref) => {
+const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
+  { errors, name, icon, ...rest },
+  ref,
+) => {
   return (
-    <div className="h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-4">
+    <div className="flex h-14 items-center gap-4 rounded-lg border border-zinc-800 bg-zinc-950 px-4">
       {icon && icon}
 
       <input
@@ -26,9 +26,9 @@ const InputBase: ForwardRefRenderFunction<
         {...rest}
       />
 
-      {errors?.name && (
-        <small className="text-zinc-400 text-sm">
-          {errors.name.message?.toString()}
+      {errors?.name && name && (
+        <small className="text-sm text-zinc-400">
+          {errors.name?.message?.toString()}
         </small>
       )}
     </div>

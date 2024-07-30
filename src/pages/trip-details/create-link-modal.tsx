@@ -1,12 +1,13 @@
-import { useForm } from "react-hook-form";
-import { Modal } from "../../components/modal";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Link2, Tag } from "lucide-react";
-import { Button } from "../../components/button";
-import { api } from "../../lib/axios";
-import { useState } from "react";
-import { useTripDetails } from "../../contexts/trip-details-context";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link2, Tag } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { Button } from '../../components/button'
+import { Modal } from '../../components/modal'
+import { useTripDetails } from '../../contexts/trip-details-context'
+import { api } from '../../lib/axios'
 
 interface CreateLinkModalProps {
   isOpen: boolean
@@ -14,21 +15,26 @@ interface CreateLinkModalProps {
 }
 
 const createLinkFormSchema = z.object({
-  title: z.string({ required_error: "Título é obrigatório" }).min(3, { message: "Título deve conter pelo menos 3 letras" }),
-  url: z.string({ required_error: "URL é obrigatório" }).url({ message: "Formato de URL incorreto" })
+  title: z
+    .string({ required_error: 'Título é obrigatório' })
+    .min(3, { message: 'Título deve conter pelo menos 3 letras' }),
+  url: z
+    .string({ required_error: 'URL é obrigatório' })
+    .url({ message: 'Formato de URL incorreto' }),
 })
 
 type CreateLinkFormData = z.infer<typeof createLinkFormSchema>
 
-export const CreateLinkModal = ({
-  isOpen,
-  onClose
-}: CreateLinkModalProps) => {
+export const CreateLinkModal = ({ isOpen, onClose }: CreateLinkModalProps) => {
   const { tripId } = useTripDetails()
 
   const [isLoading, setIsLoading] = useState(false)
-  const { handleSubmit, register, formState: { errors } } = useForm<CreateLinkFormData>({
-    resolver: zodResolver(createLinkFormSchema)
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<CreateLinkFormData>({
+    resolver: zodResolver(createLinkFormSchema),
   })
 
   async function createLink(data: CreateLinkFormData) {
@@ -38,16 +44,20 @@ export const CreateLinkModal = ({
 
     console.log(title, url)
 
-    await api.post(`/trips/${tripId}/links`, {
-      title,
-      url
-    }).then(() => {
-      window.document.location.reload()
-    }).catch((error) => {
-      console.log(error)
-    }).finally(() => {
-      setIsLoading(false)
-    })
+    await api
+      .post(`/trips/${tripId}/links`, {
+        title,
+        url,
+      })
+      .then(() => {
+        window.document.location.reload()
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return (
@@ -56,11 +66,11 @@ export const CreateLinkModal = ({
       description="Todos os convidados poderão acessar esse link."
       isOpen={isOpen}
       onClose={onClose}
-      className="max-w-[640px] w-full"
+      className="w-full max-w-[640px]"
     >
       <form onSubmit={handleSubmit(createLink)} className="space-y-3">
-        <div className="h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-4">
-          <Tag className="size-5 ml-2 text-zinc-400" />
+        <div className="flex h-14 items-center gap-4 rounded-lg border border-zinc-800 bg-zinc-950 px-4">
+          <Tag className="ml-2 size-5 text-zinc-400" />
 
           <input
             placeholder="Título do link"
@@ -69,14 +79,14 @@ export const CreateLinkModal = ({
           />
 
           {errors.title && (
-            <small className="text-zinc-400 text-sm">
+            <small className="text-sm text-zinc-400">
               {errors.title.message}
             </small>
           )}
         </div>
 
-        <div className="h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-4">
-          <Link2 className="size-5 ml-2 text-zinc-400" />
+        <div className="flex h-14 items-center gap-4 rounded-lg border border-zinc-800 bg-zinc-950 px-4">
+          <Link2 className="ml-2 size-5 text-zinc-400" />
 
           <input
             placeholder="URL"
@@ -85,7 +95,7 @@ export const CreateLinkModal = ({
           />
 
           {errors.url && (
-            <small className="text-zinc-400 text-sm">
+            <small className="text-sm text-zinc-400">
               {errors.url.message}
             </small>
           )}
@@ -96,5 +106,5 @@ export const CreateLinkModal = ({
         </Button>
       </form>
     </Modal>
-  );
+  )
 }
