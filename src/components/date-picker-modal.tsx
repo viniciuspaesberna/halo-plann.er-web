@@ -3,29 +3,27 @@ import { addDays } from "date-fns"
 import { Controller, useFormContext } from "react-hook-form"
 import { DayPicker } from "react-day-picker"
 
-import { X } from "lucide-react"
-
 import "react-day-picker/style.css"
-import { Modal } from "../../components/modal"
+import { Modal } from "./modal"
 import { ptBR } from "date-fns/locale"
 
 interface DatePickerModalProps {
-  isDatePickerOpen: boolean
-  closeDatePicker: () => void
+  isOpen: boolean
+  onClose: () => void
 }
 
 export const DatePickerModal = ({
-  closeDatePicker,
-  isDatePickerOpen
+  onClose,
+  isOpen
 }: DatePickerModalProps) => {
   const { control } = useFormContext()
 
-  return (
+  return isOpen ? (
     <Modal
       heading="Selecione a data"
       description="Selecione as datas de início e fim da viagem"
-      isOpen={isDatePickerOpen}
-      onClose={closeDatePicker}
+      isOpen={isOpen}
+      onClose={onClose}
     >
       <Controller
         name="trip_start_and_end_dates"
@@ -52,30 +50,5 @@ export const DatePickerModal = ({
         }
       />
     </Modal>
-  )
-
-  return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
-      <div className=" rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold text-lg">Selecione a data</h2>
-
-            <button
-              className="size-8 rounded-lg flex items-center justify-center ring-white/60 hover:ring-1"
-              onClick={closeDatePicker}
-            >
-              <X className="size-5 text-zinc-400" />
-            </button>
-          </div>
-
-          <p className="text-sm text-zinc-400 text-left">
-            Selecione as datas de início e fim da viagem
-          </p>
-        </div>
-
-
-      </div>
-    </div>
-  )
+  ) : null
 }

@@ -10,24 +10,24 @@ import { ImportantLinks } from "./important-links"
 import { Participants } from "./participants"
 import { CreateActivityModal } from "./create-activity-modal"
 import { CreateLinkModal } from "./create-link-modal"
+import { UpdateTripDetailsModal } from "./update-trip-details-modal"
 
 
 export const TripDetailsPage = () => {
   const { trip } = useTripDetails()
   const [isCreateLinksModalOpen, setIsCreateLinksModalOpen] = useState(false)
   const [isCreateActivityModalOpen, setIsCreateActivityModalOpen] = useState(false)
-
-  function openCreateActivityModal() {
-    setIsCreateActivityModalOpen(true)
-  }
+  const [isUpdateTripDetailsOpen, setIsUpdateTripDetailsOpen] = useState(false)
 
   return (
     <>
       <div className="max-w-6xl px-6 py-8 mx-auto space-y-8">
-        <TripDetailsHeader />
+        <TripDetailsHeader 
+          onUpdateTripDetailsOpen={setIsUpdateTripDetailsOpen}
+        />
 
         <main className="flex gap-16 px-4">
-          <Activities onOpenCreateActivityModal={openCreateActivityModal} />
+          <Activities onOpenCreateActivityModal={() => setIsCreateLinksModalOpen(true)} />
 
           <aside className="w-80 space-y-6">
             {!trip?.is_confirmed && (
@@ -57,6 +57,11 @@ export const TripDetailsPage = () => {
       <CreateActivityModal
         isOpen={isCreateActivityModalOpen}
         onClose={() => setIsCreateActivityModalOpen(false)}
+      />
+      
+      <UpdateTripDetailsModal
+        isOpen={isUpdateTripDetailsOpen}
+        onClose={() => setIsUpdateTripDetailsOpen(false)}
       />
     </>
   )

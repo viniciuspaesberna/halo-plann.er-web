@@ -23,7 +23,7 @@ const buttonVariants = tv({
 })
 
 interface ButtonProps extends ComponentProps<'button'>, VariantProps<typeof buttonVariants> {
-  children: ReactNode
+  children?: ReactNode
   isLoading?: boolean
 }
 

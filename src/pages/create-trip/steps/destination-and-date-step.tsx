@@ -6,7 +6,7 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import { ArrowRight, Calendar, MapPin, Settings2 } from "lucide-react";
 
-import { DatePickerModal } from "../date-picker-modal";
+import { DatePickerModal } from "../../../components/date-picker-modal";
 import { Button } from "../../../components/button";
 import { cn } from "../../../utils/cn";
 
@@ -103,7 +103,7 @@ export const DestinationAndDateStep = ({
       </button>
 
       {isDatePickerOpen && (
-        <DatePickerModal closeDatePicker={closeDatePicker} isDatePickerOpen={isDatePickerOpen} />
+        <DatePickerModal onClose={closeDatePicker} isOpen={isDatePickerOpen} />
       )}
 
       <div className="w-px h-6 bg-zinc-800" />

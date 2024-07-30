@@ -6,9 +6,13 @@ import { Calendar, MapPin, Settings2 } from "lucide-react"
 import { Button } from "../../components/button"
 import { useTripDetails } from "../../contexts/trip-details-context"
 
+interface TripDetailsHeaderProps {
+  onUpdateTripDetailsOpen: (isOpen: boolean) => void
+}
 
-
-export const TripDetailsHeader = () => {
+export const TripDetailsHeader = ({
+  onUpdateTripDetailsOpen
+}: TripDetailsHeaderProps) => {
   const { trip } = useTripDetails()
 
   const dateDisplay = trip ?
@@ -30,7 +34,7 @@ export const TripDetailsHeader = () => {
 
         <div className="w-px h-6 bg-zinc-800" />
 
-        <Button variant="secondary">
+        <Button onClick={() => onUpdateTripDetailsOpen(true)} variant="secondary">
           Alterar local / data
           <Settings2 className="size-5" />
         </Button>
