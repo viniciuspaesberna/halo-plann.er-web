@@ -5,14 +5,20 @@ import { ptBR } from 'date-fns/locale'
 import { DayPicker } from 'react-day-picker'
 import { Controller, useFormContext } from 'react-hook-form'
 
+import { Button } from './button'
 import { Modal } from './modal'
 
 interface DatePickerModalProps {
+  fieldName: string
   isOpen: boolean
   onClose: () => void
 }
 
-export const DatePickerModal = ({ onClose, isOpen }: DatePickerModalProps) => {
+export const DatePickerModal = ({
+  onClose,
+  isOpen,
+  fieldName,
+}: DatePickerModalProps) => {
   const { control } = useFormContext()
 
   return isOpen ? (
@@ -23,7 +29,7 @@ export const DatePickerModal = ({ onClose, isOpen }: DatePickerModalProps) => {
       onClose={onClose}
     >
       <Controller
-        name="trip_start_and_end_dates"
+        name={fieldName}
         control={control}
         render={({ field }) => (
           <DayPicker
@@ -47,6 +53,10 @@ export const DatePickerModal = ({ onClose, isOpen }: DatePickerModalProps) => {
           />
         )}
       />
+
+      <Button onClick={onClose} size="full">
+        Selecionar datas
+      </Button>
     </Modal>
   ) : null
 }

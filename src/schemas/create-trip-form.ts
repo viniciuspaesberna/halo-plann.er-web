@@ -7,7 +7,7 @@ const emailSchema = z
 export const createTripFormSchema = z.object({
   destination: z
     .string({ required_error: 'Destino é obrigatório' })
-    .min(3, { message: 'Destino deve conter pelo menos 3 letras' }),
+    .min(4, { message: 'Destino deve conter pelo menos 4 letras' }),
   trip_start_and_end_dates: z
     .object({
       from: z.date().optional(),

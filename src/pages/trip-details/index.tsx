@@ -6,16 +6,19 @@ import { Activities } from './activities'
 import { CreateActivityModal } from './create-activity-modal'
 import { CreateLinkModal } from './create-link-modal'
 import { ImportantLinks } from './important-links'
+import { ManageGuestsModal } from './manage-guests-modal'
 import { Participants } from './participants'
 import { TripDetailsHeader } from './trip-details-header'
 import { UpdateTripDetailsModal } from './update-trip-details-modal'
 
 export const TripDetailsPage = () => {
   const { trip } = useTripDetails()
+
   const [isCreateLinksModalOpen, setIsCreateLinksModalOpen] = useState(false)
   const [isCreateActivityModalOpen, setIsCreateActivityModalOpen] =
     useState(false)
   const [isUpdateTripDetailsOpen, setIsUpdateTripDetailsOpen] = useState(false)
+  const [isManageGuestsModalOpen, setIsManageGuestsModalOpen] = useState(false)
 
   return (
     <>
@@ -49,7 +52,9 @@ export const TripDetailsPage = () => {
 
             <div className="h-px w-full bg-zinc-800" />
 
-            <Participants />
+            <Participants
+              onManageGuestsModalOpen={() => setIsManageGuestsModalOpen(true)}
+            />
           </aside>
         </main>
       </div>
@@ -67,6 +72,11 @@ export const TripDetailsPage = () => {
       <UpdateTripDetailsModal
         isOpen={isUpdateTripDetailsOpen}
         onClose={() => setIsUpdateTripDetailsOpen(false)}
+      />
+
+      <ManageGuestsModal
+        isOpen={isManageGuestsModalOpen}
+        onClose={() => setIsManageGuestsModalOpen(false)}
       />
     </>
   )

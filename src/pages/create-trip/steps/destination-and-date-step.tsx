@@ -17,7 +17,7 @@ interface DestinationAndDateStepProps {
 const destinationAndDateStepSchema = z.object({
   destination: z
     .string({ required_error: 'Destino é obrigatório' })
-    .min(3, { message: 'Destino deve conter pelo menos 3 letras' }),
+    .min(4, { message: 'Destino deve conter pelo menos 4 letras' }),
   trip_start_and_end_dates: z
     .object({
       from: z.date().optional(),
@@ -89,70 +89,77 @@ export const DestinationAndDateStep = ({
       : null
 
   return (
-    <div className="relative flex h-16 items-center gap-3 rounded-xl bg-zinc-900 px-4 shadow-shape">
-      <div className="flex flex-1 items-center gap-2">
-        <MapPin className="size-5 text-zinc-400" />
+    <>
+      <div className="relative flex h-16 items-center gap-3 rounded-xl bg-zinc-900 px-4 shadow-shape">
+        <div className="flex flex-1 items-center gap-2">
+          <MapPin className="size-5 text-zinc-400" />
 
-        <Controller
-          name="destination"
-          control={control}
-          render={({ field }) => (
-            <input
-              {...field}
-              disabled={isGuestsInputOpen}
-              placeholder="Para onde você vai?"
-              className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
-            />
-          )}
-        />
+          <Controller
+            name="destination"
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                disabled={isGuestsInputOpen}
+                placeholder="Para onde você vai?"
+                className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+              />
+            )}
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={openDatePicker}
+          className="flex items-center gap-2 text-left outline-none"
+          disabled={isGuestsInputOpen}
+        >
+          <Calendar className="size-5 shrink-0 text-zinc-400" />
+
+          <span
+            className={cn(
+              'w-auto flex-1 text-lg text-zinc-400',
+              dateDisplay && 'text-zinc-100',
+            )}
+          >
+            {dateDisplay || 'Quando?'}
+          </span>
+        </button>
+
+        <div className="h-6 w-px bg-zinc-800" />
+
+        {!isGuestsInputOpen ? (
+          <Button onClick={destinationAndDateStepValidation}>
+            Continuar
+            <ArrowRight className="size-5" />
+          </Button>
+        ) : (
+          <Button variant="secondary" onClick={toggleIsGuestsInputOpen}>
+            Alterar local/data
+            <Settings2 className="size-5" />
+          </Button>
+        )}
+
+        {errors.destination && (
+          <small className="absolute -bottom-6 text-rose-400">
+            {errors.destination.message?.toString()}
+          </small>
+        )}
+
+        {errors.trip_start_and_end_dates && !isDatePickerOpen && (
+          <small className="absolute -bottom-6 text-rose-400">
+            {errors.trip_start_and_end_dates.message?.toString()}
+          </small>
+        )}
       </div>
 
-      <button
-        onClick={openDatePicker}
-        className="flex items-center gap-2 text-left outline-none"
-        disabled={isGuestsInputOpen}
-      >
-        <Calendar className="size-5 shrink-0 text-zinc-400" />
-
-        <span
-          className={cn(
-            'w-auto flex-1 text-lg text-zinc-400',
-            dateDisplay && 'text-zinc-100',
-          )}
-        >
-          {dateDisplay || 'Quando?'}
-        </span>
-      </button>
-
       {isDatePickerOpen && (
-        <DatePickerModal onClose={closeDatePicker} isOpen={isDatePickerOpen} />
+        <DatePickerModal
+          fieldName="trip_start_and_end_dates"
+          onClose={closeDatePicker}
+          isOpen={isDatePickerOpen}
+        />
       )}
-
-      <div className="h-6 w-px bg-zinc-800" />
-
-      {!isGuestsInputOpen ? (
-        <Button onClick={destinationAndDateStepValidation}>
-          Continuar
-          <ArrowRight className="size-5" />
-        </Button>
-      ) : (
-        <Button variant="secondary" onClick={toggleIsGuestsInputOpen}>
-          Alterar local/data
-          <Settings2 className="size-5" />
-        </Button>
-      )}
-
-      {errors.destination && (
-        <small className="absolute -bottom-6 text-rose-400">
-          {errors.destination.message?.toString()}
-        </small>
-      )}
-
-      {errors.trip_start_and_end_dates && !isDatePickerOpen && (
-        <small className="absolute -bottom-6 text-rose-400">
-          {errors.trip_start_and_end_dates.message?.toString()}
-        </small>
-      )}
-    </div>
+    </>
   )
 }

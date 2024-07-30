@@ -13,7 +13,13 @@ export type Participant = {
   is_owner: boolean
 }
 
-export const Participants = () => {
+interface ParticipantsProps {
+  onManageGuestsModalOpen: () => void
+}
+
+export const Participants = ({
+  onManageGuestsModalOpen,
+}: ParticipantsProps) => {
   const [participants, setParticipants] = useState<Participant[]>([])
 
   const { tripId } = useTripDetails()
@@ -63,7 +69,7 @@ export const Participants = () => {
         ))}
       </div>
 
-      <Button variant="secondary" size="full">
+      <Button onClick={onManageGuestsModalOpen} variant="secondary" size="full">
         <UserCog className="size-5" />
         Gerenciar convidados
       </Button>

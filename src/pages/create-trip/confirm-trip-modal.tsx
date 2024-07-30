@@ -35,7 +35,7 @@ export const ConfirmTripModal = ({
           <span className="ml-1 font-semibold text-zinc-100">
             {destination}
           </span>
-          , de {` `}{' '}
+          , de {` `}
           <span className="ml-1 font-semibold text-zinc-100">
             {dateDisplay}
           </span>

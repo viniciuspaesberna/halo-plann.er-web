@@ -4,15 +4,14 @@ import {
   ForwardRefRenderFunction,
   ReactElement,
 } from 'react'
-import { FieldErrors, FieldValues } from 'react-hook-form'
 
 interface InputProps extends ComponentProps<'input'> {
-  errors?: FieldErrors<FieldValues>
+  error?: string | undefined
   icon?: ReactElement<unknown, string | React.JSXElementConstructor<unknown>>
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
-  { errors, name, icon, ...rest },
+  { error, icon, ...rest },
   ref,
 ) => {
   return (
@@ -20,17 +19,12 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
       {icon && icon}
 
       <input
-        placeholder="Título do link"
         className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
         ref={ref}
         {...rest}
       />
 
-      {errors?.name && name && (
-        <small className="text-sm text-zinc-400">
-          {errors.name?.message?.toString()}
-        </small>
-      )}
+      {error && <small className="text-sm text-zinc-400">{error}</small>}
     </div>
   )
 }
