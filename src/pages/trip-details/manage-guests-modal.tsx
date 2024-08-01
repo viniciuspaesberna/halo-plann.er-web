@@ -22,6 +22,8 @@ const manageGuestsFormSchema = z.object({
     .default([]),
 })
 
+type ManageGuestsFormData = z.infer<typeof manageGuestsFormSchema>
+
 export const ManageGuestsModal = ({
   isOpen,
   onClose,
@@ -76,8 +78,10 @@ export const ManageGuestsModal = ({
     setValue('newEmailsToInvite', newEmails)
   }
 
-  async function inviteNewGuests() {
+  async function inviteNewGuests(data: ManageGuestsFormData) {
     setIsLoading(true)
+
+    const { newEmailsToInvite } = data
 
     await api
       .post(`/trips/${tripId}/invites`, {
@@ -89,7 +93,9 @@ export const ManageGuestsModal = ({
       .catch((error) => {
         console.error(error)
       })
-      .finally(() => {})
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return (
