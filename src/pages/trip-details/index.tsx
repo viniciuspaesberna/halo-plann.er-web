@@ -29,7 +29,7 @@ export const TripDetailsPage = () => {
 
         <main className="flex gap-16 px-4">
           <Activities
-            onOpenCreateActivityModal={() => setIsCreateLinksModalOpen(true)}
+            onOpenCreateActivityModal={() => setIsCreateActivityModalOpen(true)}
           />
 
           <aside className="w-80 space-y-6">
